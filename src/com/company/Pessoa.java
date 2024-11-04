@@ -9,4 +9,5 @@ public abstract class Pessoa {
         this.nome = nome;
         this.sobrenome = sobrenome;
     }
+    public abstract String getSaudacao();
 }
