@@ -47,6 +47,7 @@ public class Main {
                         Usuario usuarioLogado = Locadora.login(loginEmail, loginSenha);
                         if (usuarioLogado != null) {
                             System.out.println("Login realizado com sucesso!");
+                            System.out.println(usuarioLogado.getSaudacao());
                             loginSuccessful = true;
                         }
                         else {
