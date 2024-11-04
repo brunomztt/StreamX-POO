@@ -31,4 +31,9 @@ public class Catalogo extends Filme {
         }
         return filmesGenero;
     }
+        @Override
+    public void atualizarAvaliacao(double novaAvaliacao){
+        super.atualizarAvaliacao(novaAvaliacao);
+        System.out.println("Avaliação atualizada no catálogo para o filme: " + titulo);
+    }
 }
