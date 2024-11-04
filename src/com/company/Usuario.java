@@ -12,6 +12,11 @@ public class Usuario extends Pessoa {
         this.senha = senha;
     }
 
+    @Override
+    public String getSaudacao() {
+        return "Olá, " + nome + " " + sobrenome + "!";
+    }
+
     public String getEmail() {
         return email;
     }
