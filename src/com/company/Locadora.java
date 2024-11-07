@@ -1,31 +1,28 @@
 package com.company;
-
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Locadora {
     private static List<Usuario> usuariosCadastrados = new ArrayList<>();
+    private static final String ARQUIVO_USUARIOS = "usuarios.txt";
 
+    static {
+        carregarUsuariosDoArquivo();
+    }
 
-
-
-    // cadastrar um novo usuário
     public static void cadastrar(String nome, String sobrenome, String email, String senha) {
-        //chama o metodo que confere o email, o metodo retorna true, entao aqui tem que ser falso
         if (!verificarUsuarioCadastrado(email)) {
             Usuario usuario = new Usuario(nome, sobrenome, email, senha);
-            //adiciona na lista
             usuariosCadastrados.add(usuario);
+            salvarUsuarioNoArquivo(usuario);
             System.out.println("Cadastro realizado com sucesso!");
-        }
-        else {
+        } else {
             System.out.println("Usuário já cadastrado com este email.");
         }
     }
 
-    // Método para verificar se o usuário já está cadastrado pelo email
     private static boolean verificarUsuarioCadastrado(String email) {
-        //percorre a lista
         for (Usuario usuario : usuariosCadastrados) {
             if (usuario.getEmail().equals(email)) {
                 return true;
@@ -34,18 +31,57 @@ public class Locadora {
         return false;
     }
 
-    // Método para autenticar o usuário pelo email e senha
     public static Usuario login(String email, String senha) {
         for (Usuario usuario : usuariosCadastrados) {
-            //verifica se tem um usuario com os dados digitados
             if (usuario.getEmail().equals(email) && usuario.getSenha().equals(senha)) {
-                //retorna esse usuario
                 return usuario;
             }
         }
-        //caso nao encontre
         return null;
     }
 
+    private static void salvarUsuarioNoArquivo(Usuario usuario) {
+        if (!emailExisteNoArquivo(usuario.getEmail())) {
+            try (FileWriter writer = new FileWriter(ARQUIVO_USUARIOS, true)) {
+                String linha = usuario.getNome() + "," + usuario.getSobrenome() + "," + usuario.getEmail() + "," + usuario.getSenha();
+                writer.write(linha + "\n");
+            } catch (IOException e) {
+                System.out.println("Erro ao salvar o usuário no arquivo.");
+            }
+        }
+    }
 
+    private static boolean emailExisteNoArquivo(String email) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(ARQUIVO_USUARIOS))) {
+            String linha;
+            while ((linha = reader.readLine()) != null) {
+                String[] dados = linha.split(",");
+                if (dados.length > 2 && dados[2].equals(email)) {
+                    return true;
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Erro ao ler o arquivo.");
+        }
+        return false;
+    }
+
+    private static void carregarUsuariosDoArquivo() {
+        try (BufferedReader reader = new BufferedReader(new FileReader(ARQUIVO_USUARIOS))) {
+            String linha;
+            while ((linha = reader.readLine()) != null) {
+                String[] dados = linha.split(",");
+                if (dados.length == 4) {
+                    String nome = dados[0];
+                    String sobrenome = dados[1];
+                    String email = dados[2];
+                    String senha = dados[3];
+                    Usuario usuario = new Usuario(nome, sobrenome, email, senha);
+                    usuariosCadastrados.add(usuario);
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Erro ao carregar os usuários: " + e.getMessage());
+        }
+    }
 }

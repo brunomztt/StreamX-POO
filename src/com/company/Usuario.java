@@ -5,8 +5,7 @@ public class Usuario extends Pessoa {
     protected String senha;
     protected boolean statusAtivo;
 
-
-    public Usuario(String nome, String sobrenome, String email, String senha){
+    public Usuario(String nome, String sobrenome, String email, String senha) {
         super(nome, sobrenome);
         this.email = email;
         this.senha = senha;
@@ -21,8 +20,9 @@ public class Usuario extends Pessoa {
         return email;
     }
 
-    public String getSenha(){return senha;}
-
+    public String getSenha() {
+        return senha;
+    }
 
     public void cancelarConta() {
         this.statusAtivo = false;
