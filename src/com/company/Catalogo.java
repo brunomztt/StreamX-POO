@@ -3,13 +3,12 @@ package com.company;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Catalogo extends Filme {
+public class Catalogo {
     private int totalFilmes;
     private ArrayList<Filme> filmes;
 
-    public Catalogo(String titulo, int ano, String genero, String diretor, double duracao, String descricao, String classificacao, double avaliacaoMedia, double preco) {
-        super(titulo, ano, genero, diretor, duracao, descricao, classificacao, avaliacaoMedia, preco);
-
+    public Catalogo(int totalFilme) {
+        this.totalFilmes = totalFilme;
     }
 
     public void adicionarFilme(Filme filme) {
@@ -30,10 +29,5 @@ public class Catalogo extends Filme {
             }
         }
         return filmesGenero;
-    }
-        @Override
-    public void atualizarAvaliacao(double novaAvaliacao){
-        super.atualizarAvaliacao(novaAvaliacao);
-        System.out.println("Avaliação atualizada no catálogo para o filme: " + titulo);
     }
 }
