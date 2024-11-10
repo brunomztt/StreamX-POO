@@ -169,6 +169,7 @@ public class Main {
                         JOptionPane.showMessageDialog(loginFrame, "Usuário ou senha incorretos. Tente novamente.");
                     }
             }
-        });
-    }
+        }            
+        })
+            ;}
 }
