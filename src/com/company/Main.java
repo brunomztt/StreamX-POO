@@ -151,15 +151,23 @@ public class Main {
         submitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String email = emailField.getText();
-                String senha = new String(senhaField.getPassword());
-                Usuario usuarioLogado = Locadora.login(email, senha);
-                if (usuarioLogado != null) {
-                    JOptionPane.showMessageDialog(loginFrame, "Login realizado com sucesso!");
+                String username = emailField.getText();
+                String password = new String(senhaField.getPassword());
+
+                // Verifica o login do admin
+                Administrador admin = new Administrador("Admin", "");
+                if (admin.login(username, password)) { // método admin.login retorna true se corresponder
+                    JOptionPane.showMessageDialog(loginFrame, admin.getSaudacao());
                     loginFrame.dispose();
                 } else {
-                    JOptionPane.showMessageDialog(loginFrame, "Email ou senha incorretos. Tente novamente.");
-                }
+                    // Verificação do login de usuário normal
+                    Usuario usuarioLogado = Locadora.login(username, password);
+                    if (usuarioLogado != null) {
+                        JOptionPane.showMessageDialog(loginFrame, usuarioLogado.getSaudacao());
+                        loginFrame.dispose();
+                    } else {
+                        JOptionPane.showMessageDialog(loginFrame, "Usuário ou senha incorretos. Tente novamente.");
+                    }
             }
         });
     }
