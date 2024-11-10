@@ -40,7 +40,7 @@ public class Filme {
         this.descricao = novaDescricao;
     }
 
-    public void atualizarAvaliacao(double novaAvaliacao) {
+    public void atualizarAvaliacao(double novaAvaliacao) throws Exception {
         if (novaAvaliacao >= 0 && novaAvaliacao <= 10) {
             avaliacoes.add(novaAvaliacao);
 
@@ -54,7 +54,7 @@ public class Filme {
             // exibe a média da avaliação ao usuário
             System.out.println("Avaliação do filme: " + titulo + "\n" + this.avaliacaoMedia);
         } else {
-            System.out.println("Avaliação deve estar entre 0 e 10.");
+            throw new Exception("Avaliação deve estar entre 0 e 10.");
         }
     }
 

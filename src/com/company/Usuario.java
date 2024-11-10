@@ -3,9 +3,10 @@ package com.company;
 public class Usuario extends Pessoa {
     protected String email;
     protected String senha;
+    protected boolean statusAtivo;
 
-    public Usuario(String nome, String sobrenome, String email, String senha, boolean statusAtivo) {
-        super(nome, sobrenome, statusAtivo);
+    public Usuario(String nome, String sobrenome, String email, String senha) {
+        super(nome, sobrenome);
         this.email = email;
         this.senha = senha;
     }
@@ -28,7 +29,4 @@ public class Usuario extends Pessoa {
         System.out.println("Conta cancelada com sucesso.");
     }
 
-    public boolean isAtivo() {
-        return statusAtivo;
-    }
 }
