@@ -1,39 +1,50 @@
 package com.company;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
+import java.util.List;
+import java.util.ArrayList;
 
 public class TesteTxt {
-    public int escreve(String nome){
+    private static final String ARQUIVO="usuarios.txt";
+
+
+    public int escrever(List<Usuario>usuarios){
         int resultado = 0;
-        try{
-            FileWriter fw = new FileWriter(nome);
-            fw.write("Primeira linha \n");
-            fw.write("Segunda linha \n");
-            fw.close();
+        try(FileWriter fw=new FileWriter(ARQUIVO)){
+            for (Usuario usuario : usuarios){
+                String linha = usuario.getNome() + ";" + usuario.getSobrenome() + ";" + usuario.getEmail() + ";" + usuario.getSenha();
+                fw.write(linha+"\n");
+            }
             resultado = 1;
-        }catch(Exception e){
+            System.out.println("dados salvos com sucesso");
+        }catch(IOException e){
             System.out.println("Erro: " + e.getMessage());
         }
         return resultado;
     }
+    //metodo que lê os usuarios do arquivo e retorna a lista
 
-    public int leitura(String nome){
-        int linhas = 0;
-        try{
-            FileReader fr = new FileReader(nome);
-            BufferedReader bf = new BufferedReader(fr);
-            String linha = bf.readLine();
-            while(linha != null){
-                linha = bf.readLine();
-                linhas++;
+    public List<Usuario> leitura(){
+        List<Usuario> usuarios = new ArrayList<>();
+        try(BufferedReader bf = new BufferedReader(new FileReader(ARQUIVO))){
+            String linha;
+            while ((linha=bf.readLine()) != null){
+                //divide a linha nos dados separados com ";
+                String[] dados = linha.split(";");
+                if(dados.length == 4){
+                    String nome = dados[0];
+                    String sobrenome = dados[1];
+                    String email = dados[2];
+                    String senha = dados[3];
+                    Usuario usuario= new Usuario(nome,sobrenome,email,senha);
+                    usuarios.add(usuario);
+                }
             }
-            bf.close(); // Feche o BufferedReader após o uso
-        }catch(Exception e){
+        }
+
+        catch(IOException e){
             System.out.println("Erro: " + e.getMessage());
         }
-        return linhas;
+        return usuarios;
     }
 }
