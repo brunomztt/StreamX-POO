@@ -1,3 +1,4 @@
+package com.company;
 public class Administrador extends Pessoa {
 
   private static final String username = "admin";
