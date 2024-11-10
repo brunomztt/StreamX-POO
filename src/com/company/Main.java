@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 
 public class Main {
     public static void main(String[] args) {
+        Locadora.carregarUsuarios(); //carrega dados persistidos
         // recommit
         // frame
         JFrame frame = new JFrame("Stream X");
@@ -113,6 +114,7 @@ public class Main {
                 String email = emailField.getText();
                 String senha = new String(senhaField.getPassword());
                 Locadora.cadastrar(nome, sobrenome, email, senha);
+                Locadora.salvarUsuarios();
                 JOptionPane.showMessageDialog(cadastroFrame, "Cadastro realizado com sucesso!");
                 cadastroFrame.dispose();
             }
