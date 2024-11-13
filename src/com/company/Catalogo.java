@@ -4,15 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Catalogo {
-    private int totalFilmes;
-    private ArrayList<Filme> filmes;
+    public static int totalFilmes=0;
+    public static ArrayList<Filme> filmes;
 
     public Catalogo(int totalFilme) {
         this.totalFilmes = totalFilme;
         this.filmes=new ArrayList<>();
     }
 
-    public void adicionarFilme(Filme filme) {
+    public static void adicionarFilme(Filme filme) {
         filmes.add(filme);
         totalFilmes++;
     }
