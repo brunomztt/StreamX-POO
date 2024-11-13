@@ -9,6 +9,7 @@ public class Catalogo {
 
     public Catalogo(int totalFilme) {
         this.totalFilmes = totalFilme;
+        this.filmes=new ArrayList<>();
     }
 
     public void adicionarFilme(Filme filme) {
@@ -30,4 +31,12 @@ public class Catalogo {
         }
         return filmesGenero;
     }
+    public List<Filme> getFilmes() {
+        return filmes; // Retorna a lista de filmes
+    }
+
+    public int getTotalFilmes() {
+        return totalFilmes; // Retorna o total de filmes
+    }
 }
+
