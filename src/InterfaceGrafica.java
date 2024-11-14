@@ -18,5 +18,4 @@ public abstract class InterfaceGrafica {
         frame.revalidate();
         frame.repaint();
     }
-
 }
