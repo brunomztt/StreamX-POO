@@ -9,6 +9,7 @@ public class Catalogo {
 
     public Catalogo(int totalFilme) {
         this.totalFilmes = totalFilme;
+        this.filmes=new ArrayList<>();
         // Não é mais necessário inicializar filmes aqui, pois já fizemos isso acima.
     }
 
@@ -17,9 +18,15 @@ public class Catalogo {
         totalFilmes++;
     }
 
-    public void removerFilme(Filme filme) {
-        filmes.remove(filme);
-        totalFilmes--;
+    public static boolean removerFilmePorTitulo(String titulo) {
+        for (Filme filme : filmes) {
+            if (filme.getTitulo().equalsIgnoreCase(titulo)) {
+                filmes.remove(filme);
+                totalFilmes--;
+                return true;
+            }
+        }
+        return false;
     }
 
     public List<Filme> buscarFilmesPorGenero(String genero) {
