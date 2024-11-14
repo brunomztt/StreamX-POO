@@ -29,13 +29,22 @@ public class Pagamento {
         System.out.println("Pagamento confitmado.");
     }
 
-    public void gerarRecibo() {
+    public void gerarRecibo() throws PagamentoNaoConfirmadoException {
         if (confirmado)
         {
             System.out.println("Recibo no valor de R$" + valor + "\nData do Pagamento: " + dataPagamento+"\nMétodo de pagamento: " + metodoPagamento);
         }
         else {
-            System.out.println("Pagamento não confirmado. Não é possível gerar recibo.");
+            throw new PagamentoNaoConfirmadoException ("Pagamento não confirmado. Não é possível gerar recibo.");
         }
     }
+
+    public void processarRecibo(){
+        try {
+            gerarRecibo();
+        } catch (PagamentoNaoConfirmadoException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
 }

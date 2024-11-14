@@ -13,6 +13,6 @@ public class Administrador extends Pessoa {
   }
   @Override
   public String getSaudacao() {
-    return "seja bem-vindo ao perfil do adm " + username;
+    return "Seja bem-vindo ao perfil do adm " + username;
   }
 }
