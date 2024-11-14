@@ -28,6 +28,9 @@ public class Filme {
         this.preco = preco;
     }
 
+    public Filme(String titulo, int ano, String genero, String diretor, String descricao, String classificacao, double avaliacaoMedia, String classificacao1, double avaliacaoMedia1, double preco) {
+    }
+
     public String getDescricaoFilme() {
         return "Título: " + titulo + ", Ano: " + ano + ", Diretor: " + diretor;
     }
