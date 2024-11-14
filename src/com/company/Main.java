@@ -255,6 +255,62 @@ public class Main {
         });
     }
 
+    private static void deletarFilmeFrame(){
+            JFrame deleteFilmeFrame = new JFrame("Deletar Filme");
+            deleteFilmeFrame.setSize(400, 400);
+            deleteFilmeFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+            JPanel deleteFilmePanel = new JPanel();
+            deleteFilmePanel.setLayout(new GridLayout(7, 2, 10, 10));
+            deleteFilmePanel.setBackground(new Color(45, 52, 54));
+            deleteFilmePanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+
+            // Criando os rótulos para os campos
+            JLabel titleLabel = new JLabel("Título:");
+            titleLabel.setForeground(Color.WHITE);
+            JTextField titleField = new JTextField();
+
+            deleteFilmePanel.add(titleLabel);
+            deleteFilmePanel.add(titleField);
+
+            JPanel deletebuttonPanel = new JPanel();
+            deletebuttonPanel.setBackground(new Color(45, 52, 54));
+            JButton deleteButton = new JButton("Remover Filme");
+            deleteButton.setBackground(new Color(87, 101, 116));
+            deleteButton.setForeground(Color.black);
+            deletebuttonPanel.add(deleteButton);
+
+            deleteFilmeFrame.setLayout(new BorderLayout());
+            deleteFilmeFrame.add(deleteFilmePanel, BorderLayout.CENTER);
+            deleteFilmeFrame.add(deletebuttonPanel, BorderLayout.SOUTH);
+            deleteFilmeFrame.setVisible(true);
+
+            deleteButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    try {
+                        String titulo = titleField.getText();
+
+                        // Verifica se o filme foi encontrado e excluído
+                        boolean removido = Catalogo.removerFilmePorTitulo(titulo);
+
+                        if (removido) {
+                            JOptionPane.showMessageDialog(deleteFilmeFrame, "Filme excluído com sucesso!");
+                        } else {
+                            JOptionPane.showMessageDialog(deleteFilmeFrame, "Filme não encontrado.");
+                        }
+                        deleteFilmeFrame.dispose();
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(deleteFilmeFrame, "Erro ao excluir filme. Verifique os campos.");
+                    }
+                }
+            });
+
+        }
+    }
+
+    
+
 
     private static void criarCatalogoFrame() {
         JFrame catalogoFrame = new JFrame("Catálogo de Filmes");
