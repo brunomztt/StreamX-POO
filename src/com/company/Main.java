@@ -8,41 +8,32 @@ import java.awt.event.ActionListener;
 public class Main {
     public static void main(String[] args) {
 
-        Locadora.carregarUsuarios(); //carrega dados persistidos
-        // recommit
-        // frame
+        Locadora.carregarUsuarios(); // Carrega dados persistidos
+
         JFrame frame = new JFrame("Stream X");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(400, 300);
         frame.setLayout(new BorderLayout());
 
-        // DARK
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         panel.setBackground(new Color(45, 52, 54));
         panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
-        // Bem VIDNO
         JLabel welcomeLabel = new JLabel("Bem-vindo ao Stream X!!", SwingConstants.CENTER);
         welcomeLabel.setFont(new Font("Arial", Font.BOLD, 24));
         welcomeLabel.setForeground(Color.WHITE);
 
-        // BOTOES
         JButton cadastroButton = new JButton("Cadastro");
         cadastroButton.setFont(new Font("Arial", Font.BOLD, 18));
         cadastroButton.setBackground(new Color(87, 101, 116));
         cadastroButton.setForeground(Color.WHITE);
-        cadastroButton.setFocusPainted(false);
-        cadastroButton.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         JButton loginButton = new JButton("Login");
         loginButton.setFont(new Font("Arial", Font.BOLD, 18));
         loginButton.setBackground(new Color(87, 101, 116));
         loginButton.setForeground(Color.WHITE);
-        loginButton.setFocusPainted(false);
-        loginButton.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        // ADD
         panel.add(welcomeLabel);
         panel.add(Box.createRigidArea(new Dimension(0, 20)));
         panel.add(cadastroButton);
@@ -51,19 +42,8 @@ public class Main {
 
         frame.add(panel, BorderLayout.CENTER);
 
-        cadastroButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                criarCadastroFrame();
-            }
-        });
-
-        loginButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                criarLoginFrame();
-            }
-        });
+        cadastroButton.addActionListener(e -> criarCadastroFrame());
+        loginButton.addActionListener(e -> criarLoginFrame());
 
         frame.setVisible(true);
     }
@@ -71,10 +51,8 @@ public class Main {
     private static void criarCadastroFrame() {
         JFrame cadastroFrame = new JFrame("Cadastro");
         cadastroFrame.setSize(400, 300);
-        JPanel cadastroPanel = new JPanel();
-        cadastroPanel.setLayout(new GridLayout(5, 2));
+        JPanel cadastroPanel = new JPanel(new GridLayout(5, 2));
         cadastroPanel.setBackground(new Color(45, 52, 54));
-        cadastroPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
         JTextField nomeField = new JTextField();
         JTextField sobrenomeField = new JTextField();
@@ -82,7 +60,7 @@ public class Main {
         JPasswordField senhaField = new JPasswordField();
         JButton submitButton = new JButton("Cadastrar");
         submitButton.setBackground(new Color(87, 101, 116));
-        submitButton.setForeground(Color.BLACK);
+        submitButton.setForeground(Color.WHITE);
 
         JLabel nomeLabel = new JLabel("Nome:", SwingConstants.RIGHT);
         nomeLabel.setForeground(Color.WHITE);
@@ -107,22 +85,17 @@ public class Main {
         cadastroFrame.add(cadastroPanel);
         cadastroFrame.setVisible(true);
 
-        submitButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String nome = nomeField.getText();
-                String sobrenome = sobrenomeField.getText();
-                String email = emailField.getText();
-                String senha = new String(senhaField.getPassword());
-                Locadora.cadastrar(nome, sobrenome, email, senha);
-                Locadora.salvarUsuarios();
-                JOptionPane.showMessageDialog(cadastroFrame, "Cadastro realizado com sucesso!");
-                cadastroFrame.dispose();
-            }
+        submitButton.addActionListener(e -> {
+            String nome = nomeField.getText();
+            String sobrenome = sobrenomeField.getText();
+            String email = emailField.getText();
+            String senha = new String(senhaField.getPassword());
+            Locadora.cadastrar(nome, sobrenome, email, senha);
+            Locadora.salvarUsuarios();
+            JOptionPane.showMessageDialog(cadastroFrame, "Cadastro realizado com sucesso!");
+            cadastroFrame.dispose();
         });
-
     }
-
 
     private static void criarLoginFrame() {
         JFrame loginFrame = new JFrame("Login");
@@ -153,51 +126,41 @@ public class Main {
         loginFrame.add(loginPanel);
         loginFrame.setVisible(true);
 
-        submitButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String username = emailField.getText();
-                String password = new String(senhaField.getPassword());
+        submitButton.addActionListener(e -> {
+            String username = emailField.getText();
+            String password = new String(senhaField.getPassword());
 
-                // Verifica o login do admin
-                Administrador admin = new Administrador("Admin", "");
-                if (admin.login(username, password)) { // método admin.login retorna true se corresponder
-                    JOptionPane.showMessageDialog(loginFrame, admin.getSaudacao());
+            // Verifica o login do admin
+            Administrador admin = new Administrador("Admin", "");
+            if (admin.login(username, password)) {
+                JOptionPane.showMessageDialog(loginFrame, admin.getSaudacao());
+                loginFrame.dispose();
+                criarmenufilmesFrame();
+            } else {
+                Usuario usuarioLogado = Locadora.login(username, password);
+                if (usuarioLogado != null) {
+                    JOptionPane.showMessageDialog(loginFrame, usuarioLogado.getSaudacao());
                     loginFrame.dispose();
-                    criarmenufilmesFrame();
-
+                    criarCatalogoFrame(); // Exibe o catálogo de filmes para usuário comum
                 } else {
-                    // Verificação do login de usuário normal
-                    Usuario usuarioLogado = Locadora.login(username, password);
-                    if (usuarioLogado != null) {
-                        JOptionPane.showMessageDialog(loginFrame, usuarioLogado.getSaudacao());
-                        loginFrame.dispose();
-                    } else {
-                        JOptionPane.showMessageDialog(loginFrame, "Usuário ou senha incorretos. Tente novamente.");
-                    }
+                    JOptionPane.showMessageDialog(loginFrame, "Usuário ou senha incorretos. Tente novamente.");
+                }
             }
-        }
-        })
-            ;}
+        });
+    }
 
-    private static void criarmenufilmesFrame(){
-        JFrame adminFrame = new JFrame("Selecione a opção desejada: ");
+
+    private static void criarmenufilmesFrame() {
+        JFrame adminFrame = new JFrame("Selecione a opção desejada:");
         adminFrame.setSize(400, 300);
-        JPanel adminPanel=new JPanel();
-        adminPanel.setLayout(new GridLayout(3, 2));
+        JPanel adminPanel = new JPanel(new GridLayout(2, 1));
         adminPanel.setBackground(new Color(45, 52, 54));
-        adminPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
-        //Botão para add filmes
-        JButton addButton = new JButton("Adicionar filme");
-        addButton.setBackground(new Color(87, 101, 116));
-        addButton.setForeground(Color.BLACK);
-
-        // Botão para excluir filme
+        JButton addButton = new JButton("Adicionar Filme");
         JButton deleteButton = new JButton("Excluir Filme");
-        deleteButton.setBackground(new Color(87, 101, 116));
-        deleteButton.setForeground(Color.BLACK);
 
+        addButton.setBackground(new Color(87, 101, 116));
+        deleteButton.setBackground(new Color(87, 101, 116));
 
         adminPanel.add(addButton);
         adminPanel.add(deleteButton);
@@ -205,31 +168,34 @@ public class Main {
         adminFrame.add(adminPanel);
         adminFrame.setVisible(true);
 
-        addButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                criarAdicionarFilmeFrame();
-            }
-        });
-
+        addButton.addActionListener(e -> criarAdicionarFilmeFrame());
     }
+
     private static void criarAdicionarFilmeFrame(){
         JFrame addFilmeFrame = new JFrame("Adicionar Filme");
         addFilmeFrame.setSize(400, 400);
         addFilmeFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
         JPanel addFilmePanel = new JPanel();
-        addFilmePanel.setLayout(new GridLayout(7, 2,10,10));
+        addFilmePanel.setLayout(new GridLayout(7, 2, 10, 10));
         addFilmePanel.setBackground(new Color(45, 52, 54));
         addFilmePanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
-        // Criando os rótulos para os campos
+        // Labels para cada campo
         JLabel tituloLabel = new JLabel("Título:");
+        tituloLabel.setForeground(Color.WHITE);
         JLabel anoLabel = new JLabel("Ano:");
+        anoLabel.setForeground(Color.WHITE);
         JLabel generoLabel = new JLabel("Gênero:");
+        generoLabel.setForeground(Color.WHITE);
         JLabel diretorLabel = new JLabel("Diretor:");
+        diretorLabel.setForeground(Color.WHITE);
         JLabel duracaoLabel = new JLabel("Duração:");
+        duracaoLabel.setForeground(Color.WHITE);
         JLabel descricaoLabel = new JLabel("Descrição:");
+        descricaoLabel.setForeground(Color.WHITE);
         JLabel precoLabel = new JLabel("Preço:");
+        precoLabel.setForeground(Color.WHITE);
 
         JTextField tituloField = new JTextField();
         JTextField anoField = new JTextField();
@@ -239,6 +205,7 @@ public class Main {
         JTextField descricaoField = new JTextField();
         JTextField precoField = new JTextField();
 
+        // Adiciona as labels e campos ao painel
         addFilmePanel.add(tituloLabel);
         addFilmePanel.add(tituloField);
         addFilmePanel.add(anoLabel);
@@ -258,7 +225,7 @@ public class Main {
         buttonPanel.setBackground(new Color(45, 52, 54));
         JButton submitButton = new JButton("Adicionar Filme");
         submitButton.setBackground(new Color(87, 101, 116));
-        submitButton.setForeground(Color.black);
+        submitButton.setForeground(Color.BLACK);
         buttonPanel.add(submitButton);
 
         addFilmeFrame.setLayout(new BorderLayout());
@@ -266,32 +233,46 @@ public class Main {
         addFilmeFrame.add(buttonPanel, BorderLayout.SOUTH);
         addFilmeFrame.setVisible(true);
 
-        //clica no botao de adicionar filme
-        submitButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    String titulo = tituloField.getText();
-                    int ano = Integer.parseInt(anoField.getText());
-                    String genero = generoField.getText();
-                    String diretor = diretorField.getText();
-                    double duracao = Double.parseDouble(duracaoField.getText());
-                    String descricao = descricaoField.getText();
-                    double preco = Double.parseDouble(precoField.getText());
+        // Evento para adicionar filme
+        submitButton.addActionListener(e -> {
+            try {
+                String titulo = tituloField.getText();
+                int ano = Integer.parseInt(anoField.getText());
+                String genero = generoField.getText();
+                String diretor = diretorField.getText();
+                double duracao = Double.parseDouble(duracaoField.getText());
+                String descricao = descricaoField.getText();
+                double preco = Double.parseDouble(precoField.getText());
 
-                    // Criando o filme
-                    Filme novoFilme = new Filme(titulo, ano, genero, diretor, duracao, descricao, "Não classificado", 0.0, preco);
+                Filme novoFilme = new Filme(titulo, ano, genero, diretor, duracao, descricao, "Não classificado", 0.0, preco);
+                Catalogo.adicionarFilme(novoFilme);
 
-                    // Adicionando o filme no catálogo
-                    Catalogo.adicionarFilme(novoFilme);
-                    JOptionPane.showMessageDialog(addFilmeFrame, "Filme adicionado com sucesso!");
-                    addFilmeFrame.dispose();
-                } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(addFilmeFrame, "Erro ao adicionar filme. Verifique os campos.");
-                }
+                JOptionPane.showMessageDialog(addFilmeFrame, "Filme adicionado com sucesso!");
+                addFilmeFrame.dispose();
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(addFilmeFrame, "Erro ao adicionar filme. Verifique os campos.");
             }
         });
     }
 
+
+    private static void criarCatalogoFrame() {
+        JFrame catalogoFrame = new JFrame("Catálogo de Filmes");
+        catalogoFrame.setSize(500, 400);
+
+        JTextArea catalogoTextArea = new JTextArea();
+        catalogoTextArea.setEditable(false);
+
+        for (Filme filme : Catalogo.getFilmes()) {
+            catalogoTextArea.append(filme.getDescricaoFilme() + "\n\n");
+        }
+
+        JScrollPane scrollPane = new JScrollPane(catalogoTextArea);
+        catalogoFrame.add(scrollPane);
+        catalogoFrame.setVisible(true);
+    }
+
+
 }
+
 

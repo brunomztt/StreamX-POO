@@ -15,8 +15,7 @@ public class Filme {
     private List<Double> avaliacoes;
     protected double preco;
 
-
-    public Filme (String titulo, int ano, String genero, String diretor, double duracao, String descricao, String classificacao, double avaliacaoMedia, double preco){
+    public Filme(String titulo, int ano, String genero, String diretor, double duracao, String descricao, String classificacao, double avaliacaoMedia, double preco) {
         this.titulo = titulo;
         this.ano = ano;
         this.genero = genero;
@@ -27,9 +26,6 @@ public class Filme {
         this.avaliacaoMedia = avaliacaoMedia;
         this.avaliacoes = new ArrayList<>();
         this.preco = preco;
-    }
-
-    public Filme(String titulo, int ano, String genero, String diretor, double duracao, String descricao, String classificacao, double avaliacaoMedia, String classificacao1, double avaliacaoMedia1, double preco) {
     }
 
     public String getDescricaoFilme() {
@@ -43,22 +39,39 @@ public class Filme {
     public void atualizarAvaliacao(double novaAvaliacao) throws Exception {
         if (novaAvaliacao >= 0 && novaAvaliacao <= 10) {
             avaliacoes.add(novaAvaliacao);
-
-            // calcula a média das avaliações
             double soma = 0;
             for (double avaliacao : avaliacoes) {
                 soma += avaliacao;
             }
-            this.avaliacaoMedia = soma / avaliacoes.size(); // atualiza a média da avaliação
-
-            // exibe a média da avaliação ao usuário
+            this.avaliacaoMedia = soma / avaliacoes.size();
             System.out.println("Avaliação do filme: " + titulo + "\n" + this.avaliacaoMedia);
         } else {
             throw new Exception("Avaliação deve estar entre 0 e 10.");
         }
     }
 
-    public String getGenero(){return genero;}
+    public String getTitulo() {
+        return titulo;
+    }
 
-    public double getPreco(){ return preco;}
+    public int getAno() {
+        return ano;
+    }
+
+    public String getClassificacao() {
+        return classificacao;
+    }
+
+    public String getGenero() {
+        return genero;
+    }
+
+    public double getPreco() {
+        return preco;
+    }
+
+    @Override
+    public String toString() {
+        return "Título: " + titulo + ", Ano: " + ano + ", Gênero: " + genero + ", Diretor: " + diretor + ", Duração: " + duracao + "h, Classificação: " + classificacao + ", Avaliação Média: " + avaliacaoMedia + ", Preço: R$" + preco;
+    }
 }

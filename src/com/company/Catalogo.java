@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Catalogo {
-    public static int totalFilmes=0;
-    public static ArrayList<Filme> filmes;
+    public static int totalFilmes = 0;
+    public static List<Filme> filmes = new ArrayList<>(); // Inicialize a lista diretamente aqui
 
     public Catalogo(int totalFilme) {
         this.totalFilmes = totalFilme;
-        this.filmes=new ArrayList<>();
+        // Não é mais necessário inicializar filmes aqui, pois já fizemos isso acima.
     }
 
     public static void adicionarFilme(Filme filme) {
@@ -31,7 +31,8 @@ public class Catalogo {
         }
         return filmesGenero;
     }
-    public List<Filme> getFilmes() {
+
+    public static List<Filme> getFilmes() {
         return filmes; // Retorna a lista de filmes
     }
 
@@ -39,4 +40,3 @@ public class Catalogo {
         return totalFilmes; // Retorna o total de filmes
     }
 }
-

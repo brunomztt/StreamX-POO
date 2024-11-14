@@ -13,7 +13,6 @@ public class Locadora {
         salvarUsuarios();
     }
 
-
     public static Usuario login(String email, String senha) {
         for (Usuario usuario : usuarios) {
             if (usuario.getEmail().equals(email) && usuario.getSenha().equals(senha)) {
@@ -23,7 +22,12 @@ public class Locadora {
         return null;
     }
 
-    //salva a lista de usuarios em um arquivo
+    // Método para obter o catálogo de filmes
+    public static List<Filme> getCatalogoFilmes() {
+        return Catalogo.getFilmes(); // Retorna a lista de filmes
+    }
+
+    // Salva a lista de usuários em um arquivo
     public static void salvarUsuarios() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(ARQUIVO_USUARIOS))) {
             for (Usuario usuario : usuarios) {
@@ -41,11 +45,11 @@ public class Locadora {
             while ((linha = reader.readLine()) != null) {
                 String[] dados = linha.split(";");
                 if (dados.length == 4) {
-                    Usuario usuario=new Usuario(
-                    dados[0],
-                    dados[1],
-                    dados[2],
-                    dados[3]
+                    Usuario usuario = new Usuario(
+                            dados[0],
+                            dados[1],
+                            dados[2],
+                            dados[3]
                     );
                     usuarios.add(usuario);
                 }
